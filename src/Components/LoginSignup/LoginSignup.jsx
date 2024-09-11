@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 import './LoginSignup.css'
 import user_icon from '../Assets/person.png'
 import email_icon from '../Assets/email.png'
@@ -7,6 +8,33 @@ import password_icon from '../Assets/password.png'
 const LoginSignup = () => {
 
     const [action, setAction] = useState("Sign Up");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async() => {
+        if(action === "Sign Up"){
+            try{
+                const response = await axios.post('http://localhost:8080/api/users/signup', {
+                    name, email, password
+                });
+                alert(response.data);
+            } catch(error){
+                console.error('Error during the sign up: ', error);
+                alert("An error occured during sign up.")
+            }
+        } else{
+            try{
+                const response = await axios.post('http://localhost:8080/api/users/login', {
+                    email, password
+                });
+                alert(response.data);
+            } catch(error){
+                console.error('Error during login:', error);
+                alert('An error occured during login.');
+            }
+        }
+    };
 
   return (
     <div className='container'>
@@ -18,30 +46,35 @@ const LoginSignup = () => {
         <div className='inputs'>
             {action === "Login"?<div></div>:<div className='input'>
                 <img src={user_icon} alt=""/>
-                <input type="text" placeholder='Name'></input>
+                <input type="text" placeholder='Name' value={name} onChange={(e) => setName(e.target.value)}/>
             </div>}
-            {/* input div for name */}
             
-
             {/* input div for email */}
             <div className='input'>
                 <img src={email_icon} alt=""/>
-                <input type="email" placeholder='Email Id'></input>
+                <input type="email" placeholder='Email Id' value={email} onChange={(e) => setEmail(e.target.value)}/>
             </div>
 
             {/* input div for password */}
             <div className='input'>
                 <img src={password_icon} alt=""/>
-                <input type="password" placeholder='Password'></input>
+                <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+            </div>
+
+            <div className='submit-container'>
+                <div className='submit' onClick={handleSubmit}>{action}</div>
             </div>
         </div>
-        {action === "Sign Up"?<div></div>:<div className="forgot-password">Forgot Passwor? <span>Click Here!</span></div>}
-        
-        <div className="submit-container">
-            <div className={action === "Login"?"submit gray": "submit"} onClick={()=>{setAction("Sign Up")}}>Sign Up</div>
-            <div className={action === "Sign Up"?"submit gray": "submit"} onClick={()=>{setAction("Login")}}>Login</div>
-        </div>
-      
+
+        {action === "Sign Up" ? (
+                <div className="toggle-message">
+                    Already have an account? <span onClick={() => setAction("Login")}>Login</span>
+                </div>
+            ) : (
+                <div className="toggle-message">
+                    Create new account? <span onClick={() => setAction("Sign Up")}>Sign Up</span>
+                </div>
+            )}
     </div>
   )
 }

@@ -54,11 +54,11 @@
 
 .input input{
     height: 50px;
-    width: 400px;
+    width: 350px;
     background: transparent;
     border: none;
     outline: none;
-    color: lightgray;
+    color: black;
     font-size: 19px
 }
 
@@ -100,4 +100,13 @@
 .gray{
     background: #EAEAEA;
     color: #676767
+}
+
+.toggle-message{
+    margin-left: 20px;
+}
+
+.toggle-message span{
+    color:#4c00b4;
+    cursor: pointer;
 }
