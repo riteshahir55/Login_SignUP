@@ -11,8 +11,29 @@ const LoginSignup = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState({}); // storing validation errors
+
+    const validateFields = () => {
+        const newErrors = {};
+       
+        if(action === "Sign Up"){
+            if(!name){
+            newErrors.name = "Name is required";
+        } else if(!/^[A-Za-z\s]+$/.test(name)) {
+            newErrors.name = "Name can only contain letters and spaces";
+        }
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+};
+
 
     const handleSubmit = async() => {
+
+        //validate fields before submit
+        if(!validateFields()){
+            return;
+        }
         if(action === "Sign Up"){
             try{
                 const response = await axios.post('http://localhost:8080/api/users/signup', {
@@ -77,6 +98,7 @@ const LoginSignup = () => {
             )}
     </div>
   )
-}
+};
 
-export default LoginSignup
+
+export default LoginSignup;
