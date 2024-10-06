@@ -1,1 +1,1 @@
-react app - ritesh
+react app
