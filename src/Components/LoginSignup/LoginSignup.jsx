@@ -30,13 +30,15 @@ const LoginSignup = () => {
 
     const handleSubmit = async() => {
 
+        console.log(`Here: ${process.env.REACT_APP_API_URL}`);
+
         //validate fields before submit
         if(!validateFields()){
             return;
         }
         if(action === "Sign Up"){
             try{
-                const response = await axios.post('http://localhost:8080/api/users/signup', {
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/signup`, {
                     name, email, password
                 });
                 alert(response.data);
@@ -46,7 +48,7 @@ const LoginSignup = () => {
             }
         } else{
             try{
-                const response = await axios.post('http://localhost:8080/api/users/login', {
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/login`, {
                     email, password
                 });
                 alert(response.data);
@@ -102,3 +104,4 @@ const LoginSignup = () => {
 
 
 export default LoginSignup;
+                                                                                                                                              
